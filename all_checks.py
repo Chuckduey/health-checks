@@ -18,12 +18,15 @@ def check_root_full():
     """Returns True id root partition is full, false otherwise"""
     return check_disk_full("/",2,10)
 def main():
-     if check_reboot():
-          print("Pending Reboot")
-          sys.exit(1)
-     if check_root_full():
-         print("Disk is full")
-         sys.exit(1)
+     check = [
+            (check_reboot, "Pending Reboot"),
+            (check_root_full, "Root partition full")
+            ]
+     for check, msg in check:
+        if check():
+            print(msg)
+            sys.exit(1)
+
      print("Everything is OK.")
      sys.exit(0)
      #added line
