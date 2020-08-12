@@ -2,7 +2,16 @@
 import os
 import sys
 import shutil
+import socket
 #  
+def check_no_network():
+    """Returns True if it fails to resolve the Google URL, False otherwise"""
+    try:
+        socket.gethostbyname("www.google.com")
+        return False
+    except:
+        return True
+
 def check_reboot():
     """Returns True if the computer has a pending reboot."""
     return os.path.exists("/run/reboot-required")
@@ -20,7 +29,8 @@ def check_root_full():
 def main():
      check = [
             (check_reboot, "Pending Reboot"),
-            (check_root_full, "Root partition full")
+            (check_root_full, "Root partition full"),
+            (check_no_network, "No Internet Connection")
             ]
      everything_ok = True
      for check, msg in check:
